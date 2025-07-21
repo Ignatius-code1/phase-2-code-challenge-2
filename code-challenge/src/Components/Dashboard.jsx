@@ -5,27 +5,75 @@ import GoalsList from "./GoalsList";
 import DepositForm from "./DepositForm";
 
 const Dashboard = () => {
-  const [goals, setGoals] = useState([]);
-  const [editingGoal, setEditingGoal] = useState(null);
+  // Sample data for demonstration
+  const sampleGoals = [
+    {
+      "id": "1",
+      "name": "Travel Fund - Japan",
+      "targetAmount": 5000,
+      "savedAmount": 3200,
+      "category": "Travel",
+      "deadline": "2025-12-31",
+      "createdAt": "2024-01-15"
+    },
+    {
+      "id": "2",
+      "name": "Emergency Fund",
+      "targetAmount": 10000,
+      "savedAmount": 7500,
+      "category": "Emergency",
+      "deadline": "2026-06-30",
+      "createdAt": "2023-05-01"
+    },
+    {
+      "id": "3",
+      "name": "New Laptop",
+      "targetAmount": 1500,
+      "savedAmount": 1500,
+      "category": "Electronics",
+      "deadline": "2024-07-20",
+      "createdAt": "2024-03-10"
+    }
+  ];
+
+  const [goals, setGoals] = useState(sampleGoals);
+  const [editingGoal, setEditingGoal] = useState({});
   const [showDepositForm, setShowDepositForm] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
 
   useEffect(() => {
-    fetchGoals();
+    // No need to fetch goals as we're using sample data
+    // fetchGoals();
   }, []);
 
   const fetchGoals = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/goals");
-      setGoals(res.data);
+      // In a real app with a running server:
+      // const res = await axios.get("http://localhost:3001/goals");
+      // setGoals(res.data);
+      console.log("Fetching goals (simulated)");
     } catch (error) {
       console.error("Error fetching goals:", error);
     }
   };
 
-  const handleCreate = () => {
-    setEditingGoal(null);
-    fetchGoals();
+  const handleCreate = (newGoal) => {
+    // In a real app, we would fetch updated goals from the server
+    // For demo, we'll update the local state directly
+    if (newGoal) {
+      console.log("Received goal in handleCreate:", newGoal);
+      
+      if (newGoal.id && goals.some(g => g.id === newGoal.id)) {
+        // Update existing goal
+        setGoals(goals.map(g => g.id === newGoal.id ? newGoal : g));
+        console.log("Updated existing goal");
+      } else {
+        // Add new goal
+        setGoals([...goals, newGoal]);
+        console.log("Added new goal");
+      }
+    }
+    setEditingGoal({});
   };
 
   const handleEdit = (goal) => {
@@ -33,24 +81,25 @@ const Dashboard = () => {
     setShowDepositForm(false);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3001/goals/${id}`);
-      fetchGoals();
-    } catch (error) {
-      console.error("Error deleting goal:", error);
-    }
+  const handleDelete = (id) => {
+    // In a real app, we would call the API
+    // For demo, we'll update the local state directly
+    setGoals(goals.filter(goal => goal.id !== id));
+    console.log(`Deleted goal with id: ${id}`);
   };
 
-  const handleDeposit = () => {
-    fetchGoals();
+  const handleDeposit = (updatedGoal) => {
+    // Update the goal in our local state
+    if (updatedGoal) {
+      setGoals(goals.map(g => g.id === updatedGoal.id ? updatedGoal : g));
+    }
     setShowDepositForm(false);
   };
 
   const handleShowDepositForm = (goal) => {
     setSelectedGoal(goal);
     setShowDepositForm(true);
-    setEditingGoal(null);
+    setEditingGoal({});
   };
 
   const totalGoals = goals.length;
