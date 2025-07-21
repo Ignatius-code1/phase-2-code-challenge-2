@@ -26,10 +26,15 @@ const DepositForm = ({ goal, onDeposit }) => {
         savedAmount: goal.savedAmount + depositAmount,
       };
       
-      await axios.patch(`http://localhost:3001/goals/${goal.id}`, updatedGoal);
+      // Simulate API call with a timeout
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // In a real app, we would use this API call:
+      // await axios.patch(`http://localhost:3001/goals/${goal.id}`, updatedGoal);
+      
       setSuccess(true);
       setAmount("");
-      onDeposit();
+      onDeposit(updatedGoal); // Pass the updated goal to the parent
     } catch (error) {
       setError("Failed to make deposit. Please try again.");
       console.error("Deposit error:", error);

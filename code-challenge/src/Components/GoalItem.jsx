@@ -1,6 +1,7 @@
 import React from "react";
 
 const GoalItem = ({ goal, onDelete, onEdit, onDeposit }) => {
+  console.log("Rendering goal item:", goal);
   const progress = (goal.savedAmount / goal.targetAmount) * 100;
   const deadlineDate = new Date(goal.deadline);
   const today = new Date();

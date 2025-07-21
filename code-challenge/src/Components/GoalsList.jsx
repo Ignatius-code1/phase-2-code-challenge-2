@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import GoalItem from "./GoalItem";
 
 const GoalsList = ({ goals, onDelete, onEdit, onDeposit }) => {
+  console.log("Goals in GoalsList:", goals);
   const [filterCategory, setFilterCategory] = useState("");
   const [sortBy, setSortBy] = useState("deadline");
 
